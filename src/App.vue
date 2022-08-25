@@ -1,30 +1,63 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div class="main-container">
+    <div class="title">Добавление товара</div>
+    <div class="content">
+      <AddForm />
+      <Products />
+    </div>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import AddForm from '@/components/AddForm.vue'
+import Products from '@/components/Products.vue'
+
+export default {
+  components: {
+    AddForm,
+    Products,
+},
+  data () {
+    return {
+      
+    }
+  }
+
+}
+</script>
+
+<style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-nav {
-  padding: 30px;
+body {
+  background-color: rgba(255, 254, 251, 0.8);
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.main-container {
+  width: 90%;
+  max-width: 1440px;
+  margin: auto;
+  margin-top: 31px;
+
+  .title {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 35px;
+    color: #3F3F3F;
+    margin-bottom: 16px;
+  }
+  
+  .content {
+    display: flex;
+    width: 100%;
+  }
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+
 </style>
