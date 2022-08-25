@@ -1,33 +1,29 @@
 <template>
-  <div class="products-container">
-    <div class="product-card">
-      <div class="product-image"><img src="http://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg" /></div>
-      <div class="product-title">Наименование товара</div>
+  <div
+    class="products-container"
+  >
+    <div
+      class="product-card" 
+      v-for="product in products"
+    >
+      <div class="product-image"><img :src=product.img /></div>
+      <div class="product-title">{{product.title}}</div>
       <div class="product-description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк
+        {{product.description}}
       </div>
-      <div class="product-price">10 000 руб.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-image"><img src="http://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg" /></div>
-      <div class="product-title">Наименование товара</div>
-      <div class="product-description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк
-      </div>
-      <div class="product-price">10 000 руб.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-image"><img src="http://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg" /></div>
-      <div class="product-title">Наименование товара</div>
-      <div class="product-description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк
-      </div>
-      <div class="product-price">10 000 руб.</div>
+      <div class="product-price">{{product.price}} руб.</div>
     </div>
   </div>
 </template>
 <script>
+
 export default {
+  props: {
+    products: {
+      type: Array,
+      requared: true,
+    }
+  }
   
 }
 </script>
@@ -60,6 +56,7 @@ export default {
       width: 100%;
       height: 200px;
       margin-bottom: 16px;
+      overflow: hidden;
       & img {
         width: 100%;
       }
@@ -84,6 +81,7 @@ export default {
       line-height: 20px;
       color: #3F3F3F;
       margin: 0 16px 16px 16px;
+      overflow: auto;
     }
 
     &-price {

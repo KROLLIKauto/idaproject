@@ -28,14 +28,15 @@
       <div class="form-input-container">
         <div class="form-input-title">Цена товара</div>
         <input
-          v-model="newProduct.price"
+          :value="newProduct.price"
+          @input="addSpaceMask"
           placeholder="Введите цену"
           required
         />
       </div>
       <button
         class="form-button"
-        
+        :disabled="isDisabled"        
         @click="createProducts"
       >
         Добавить товар
@@ -55,11 +56,43 @@ export default {
       }
     }
   },
+  computed: {
+    isDisabled() {
+      if (
+        this.newProduct.title.length === 0
+        || this.newProduct.img.length === 0
+        || this.newProduct.price.length === 0
+      ) return true
+
+      return false
+    },
+  },
   methods: {
     createProducts() {
       this.newProduct.id = new Date()
+      this.$emit('create', this.newProduct)
+      this.newProduct = {
+        title: '',
+        description: '',
+        img: '',
+        price: '',
+      }
+    },
 
-      console.log(this.newProduct);
+    addSpaceMask(e) {
+      this.newProduct.price = e.target.value.length > 3 ? this.getValidPrice(e) : e.target.value
+    },
+
+    getValidPrice(e) {
+      const value = e.target.value.split(' ').join('')
+
+      let arrWithArrays = []
+      let arrValue = value.split('')
+      while (arrValue.length) arrWithArrays.push(arrValue.splice(-3, 3), ' ')
+      let result = arrWithArrays.reverse().flat().join('')
+      result.slice(0, 1) === ' ' && result.slice(0, 1)
+
+      return result
     }
   }
 }
@@ -143,6 +176,12 @@ export default {
       &:hover {
         cursor: pointer;
         border: 1px solid rgb(62, 99, 62);
+      }
+
+      &:disabled {
+        background-color: #a9a9a9;
+        cursor: auto;
+        border: none;
       }
     }
   }
