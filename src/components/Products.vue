@@ -1,33 +1,54 @@
 <template>
-  <div class="products-container">
-    <div class="product-card">
-      <div class="product-image"><img src="http://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg" /></div>
-      <div class="product-title">Наименование товара</div>
-      <div class="product-description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк
+  <div
+    class="products-container"
+  >
+    <div
+      class="product-card" 
+      v-for="product in products"
+      :key="product.id"
+    >
+      <div
+        class="product-icon-remove"
+        @click="$emit('remove', product)"
+      >
+        <img src="@/images/delete.png" />
       </div>
-      <div class="product-price">10 000 руб.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-image"><img src="http://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg" /></div>
-      <div class="product-title">Наименование товара</div>
+      <div class="product-image"><img :src=product.img /></div>
+      <div class="product-title">{{product.title}}</div>
       <div class="product-description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк
+        {{product.description}}
       </div>
-      <div class="product-price">10 000 руб.</div>
-    </div>
-    <div class="product-card">
-      <div class="product-image"><img src="http://bipbap.ru/wp-content/uploads/2017/04/0_7c779_5df17311_orig.jpg" /></div>
-      <div class="product-title">Наименование товара</div>
-      <div class="product-description">
-        Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк
-      </div>
-      <div class="product-price">10 000 руб.</div>
+      <div class="product-price">{{getValidPrice(product.price)}} руб.</div>
     </div>
   </div>
 </template>
+
 <script>
+
 export default {
+  props: {
+    products: {
+      type: Array,
+      requared: true,
+    },
+  },
+  methods: {
+    getValidPrice(product) {
+      const value = product.split(' ').join('')
+      if (isNaN(+value)) {
+        this.newProduct.price = ''
+        return
+      }
+
+      let arrWithArrays = []
+      let arrValue = value.split('')
+      while (arrValue.length) arrWithArrays.push(arrValue.splice(-3, 3), ' ')
+      let result = arrWithArrays.reverse().flat().join('')
+      result.slice(0, 1) === ' ' && result.slice(0, 1)
+
+      return result
+    }
+  },
   
 }
 </script>
@@ -37,8 +58,11 @@ export default {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
-  justify-content: space-between;
   margin-left: 16px;
+  @media (max-width: 800px) {
+    justify-content: center;
+    margin-top: 5%;
+  }
 
   .product {
     &-card {
@@ -49,17 +73,52 @@ export default {
       box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
       border-radius: 4px;
       height: 423px;
-      overflow: hidden;
       margin-bottom: 2%;
+      margin-right: 2%;
+      position: relative;
+      cursor: pointer;
+      @media (min-width: 1200px) {
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
       @media (max-width: 1200px) {
         width: 49%;
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
       }
+      @media (max-width: 1000px) {
+        width: 80%;
+          margin-right: 0;
+      }
+
+      &:hover .product-icon-remove {
+        display: flex;
+      }
+    }
+
+    &-icon-remove {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: #FF8484;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
     }
     
     &-image {
       width: 100%;
       height: 200px;
       margin-bottom: 16px;
+      overflow: hidden;
+      border-radius: 4px 4px 0 0;
       & img {
         width: 100%;
       }
@@ -84,6 +143,7 @@ export default {
       line-height: 20px;
       color: #3F3F3F;
       margin: 0 16px 16px 16px;
+      overflow: auto;
     }
 
     &-price {
