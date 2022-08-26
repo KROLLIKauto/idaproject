@@ -70,6 +70,7 @@ export default {
   methods: {
     createProducts() {
       this.newProduct.id = new Date()
+      this.newProduct.price = this.newProduct.price.split(' ').join('')
       this.$emit('create', this.newProduct)
       this.newProduct = {
         title: '',
@@ -80,11 +81,15 @@ export default {
     },
 
     addSpaceMask(e) {
-      this.newProduct.price = e.target.value.length > 3 ? this.getValidPrice(e) : e.target.value
+      this.newProduct.price = this.getValidPrice(e)
     },
 
     getValidPrice(e) {
       const value = e.target.value.split(' ').join('')
+      if (isNaN(+value)) {
+        this.newProduct.price = ''
+        return
+      }
 
       let arrWithArrays = []
       let arrValue = value.split('')
